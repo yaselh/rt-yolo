@@ -7,17 +7,22 @@ import darknet as dn
 import numpy as np
 import cv2
 import glob
+import argparse
 
 if __name__ == "__main__":
-	if(len(sys.argv) < 2):
-		print "Please provide the images directory"
-		sys.exit()
+	parser = argparse.ArgumentParser(description='Detect ojbects and draw the predicted Bounding Boxes')
 
-	
+	parser.add_argument('--imgs_path', type=str,   help='path to the images', required=True)
+	parser.add_argument('--weights_path', type=str,   help='path to the weights file', default="weights/yolo.weights", required=True)
+	parser.add_argument('--cfg_path', type=str,   help='path to a .cfg file', default="cfg/yolo.cfg", required=True)
+	parser.add_argument('--data_path', type=str,   help='path to .data file', default="cfg/coco.data", required=True)
+
+	args = parser.parse_args()
+
 	#Define the model, model's meta data and weights
-	model = "cfg/yolo.cfg"
-	metas = "cfg/coco.data"
-	weights = "weights/yolo.weights"
+	model = args.cfg_path
+	metas = args.data_path
+	weights = args.weights_path
 	#model = "cfg/yolo9000.cfg"
 	#metas = "cfg/combine9k.data"
 	#weights = "weights/yolo9000.weights"
@@ -27,8 +32,7 @@ if __name__ == "__main__":
 	meta = dn.load_meta(metas)
 
 	#get the images
-	path = sys.argv[1]
-	imgs = glob.glob(path+'/*.jpg')
+	imgs = glob.glob(args.imgs_path+'/*.jpg')
 
 	#create the output directory
 	if imgs:
