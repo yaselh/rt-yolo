@@ -2,7 +2,7 @@
 
 import sys, os
 import math
-sys.path.append(os.path.join(os.getcwd(),'darknet/python/'))
+sys.path.append(os.path.join(os.getcwd(),'python/'))
 import darknet as dn
 import numpy as np
 import cv2
@@ -27,7 +27,7 @@ if __name__ == "__main__":
 	meta = dn.load_meta(metas)
 
 	#get the images
-	path = argv[1]
+	path = sys.argv[1]
 	imgs = glob.glob(path+'/*.jpg')
 
 	#create the output directory
