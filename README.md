@@ -11,30 +11,10 @@
 ```
 git clone https://github.com/yaselh/rt-yolo.git
 cd rt-yolo
-cat yolo9000-weights/x* > yolo9000-weights/yolo9000.weights # it was generated from split -b 95m yolo9000.weights
-md5sum yolo9000-weights/yolo9000.weights # d74ee8d5909f3b7446e9b350b4dd0f44  yolo9000.weights
-cd darknet 
+cd darknet
 make # Will run on CPU. For GPU support, scroll down!
-./darknet detector test cfg/combine9k.data cfg/yolo9000.cfg ../yolo9000-weights/yolo9000.weights data/horses.jpg
 ```
 
-### Mac OS
-```
-git clone https://github.com/yaselh/rt-yolo.git
-cd rt-yolo
-cat yolo9000-weights/x* > yolo9000-weights/yolo9000.weights # it was generated from split -b 95m yolo9000.weights
-md5 yolo9000-weights/yolo9000.weights # d74ee8d5909f3b7446e9b350b4dd0f44  yolo9000.weights
-cd darknet 
-git reset --hard b61bcf544e8dbcbd2e978ca6a716fa96b37df767
-make # Will run on CPU. For GPU support, scroll down!
-./darknet detector test cfg/combine9k.data cfg/yolo9000.cfg ../yolo9000-weights/yolo9000.weights data/horses.jpg
-```
-
-You can use the latest version of `darknet` by running this command in the directory `rt-yolo`:
-
-```
-git submodule foreach git pull origin master
-```
 
 The output should be something like:
 
@@ -65,7 +45,7 @@ layer     filters    size              input                output
    22 conv   1024  3 x 3 / 1    17 x  17 x 512   ->    17 x  17 x1024
    23 conv  28269  1 x 1 / 1    17 x  17 x1024   ->    17 x  17 x28269
    24 detection
-Loading weights from ../yolo9000-weights/yolo9000.weights...Done!
+Loading weights from darknet/weights/yolo9000-weights/yolo9000.weights...Done!
 data/horses.jpg: Predicted in 7.556429 seconds.
 wild horse: 50%
 Shetland pony: 84%
@@ -174,4 +154,4 @@ rm output_*.jpg
 The final video is `output.mp4`.
 
 <hr>
-some parts of this project were inspired from this repo : https://github.com/philipperemy/yolo-9000
+The yolo-9000 weights and some "read me" parts belong to this repository : https://github.com/philipperemy/yolo-9000
