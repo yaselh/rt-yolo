@@ -91,7 +91,7 @@ ENV/
 
 .DS_Store
 # weights
-yolo9000-weights/*
+darknet/weights
 
-#darknet
-darknet/*
+#python bins
+.pyc

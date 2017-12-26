@@ -695,6 +695,7 @@ image **load_alphabet();
 image get_network_image(network net);
 float *network_predict(network net, float *input);
 float *network_predict_p(network *net, float *input);
+void test_detector_p(network *net,char *datacfg, char *filename, float thresh, float hier_thresh, char *outfile, int fullscreen);
 
 int network_width(network *net);
 int network_height(network *net);
