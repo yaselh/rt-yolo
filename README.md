@@ -8,13 +8,19 @@
 ## How to get started?
 
 ### Ubuntu/Linux
+First clone the repository and compile darknet
 ```
 git clone https://github.com/yaselh/rt-yolo.git
 cd rt-yolo
 cd darknet
 make # Will run on CPU. For GPU support, scroll down!
 ```
-
+The command below outputs the images with the predicted bounding boxes in a folder called "prediction" in the input images directory.
+Darknet/cfg and darknet/data contain already the config and meta data files of some known models.
+Make sure that you have already downloaded the weights file.
+```
+./detector.py --imgs_path PATH_TO_IMAGES --weights_path weights/yolo.weights --cfg_path cfg/yolo.cfg --data_path cfg/coco.data
+ ```
 
 The output should be something like:
 
