@@ -2,16 +2,15 @@
 
 import sys, os
 import math
-sys.path.append(os.path.join(os.getcwd(),'python/'))
+darknet_path = "./darknet/"
+sys.path.append(os.path.join(darknet_path, "python"))
 import darknet as dn
 import numpy as np
 import glob
 import argparse
 
 class Detector:
-	def __init__(self, model="cfg/yolo.cfg",
-					   metas="cfg/coco.data",
-					   weights="weights/yolo.weights"):
+	def __init__(self,model, metas, weights):
 		#Define the model, model's meta data and weights
 		self.model = model
 		self.metas = metas
@@ -30,24 +29,25 @@ class Detector:
 
 		#create the output directory
 		if imgs:
-			output_dir = os.path.dirname(imgs[0]) + "/predictions"
+			output_dir = os.path.join(os.path.dirname(imgs[0]),"predictions")
 			if not os.path.exists(output_dir):
 				os.makedirs(output_dir)
 
 		#perform the detection
 		for img in imgs:
-			#r = dn.detect(net, meta, img)
+			r = self.detect(img)
+			print r
 			output = output_dir + '/' + os.path.basename(img)[:-4]
-			dn.test_detector(self.net, self.metas, img, .40, .5, output, False)
+			#dn.test_detector(self.net, self.metas, img, .40, .5, output, False)
 
 if __name__ == "__main__":
 
 	parser = argparse.ArgumentParser(description='Detect ojbects and draw the predicted Bounding Boxes')
 
 	parser.add_argument('--imgs_path', type=str,   help='path to the images', required=True)
-	parser.add_argument('--weights_path', type=str,   help='path to the weights file', default="weights/yolo.weights")
-	parser.add_argument('--cfg_path', type=str,   help='path to a .cfg file', default="cfg/yolo.cfg")
-	parser.add_argument('--data_path', type=str,   help='path to .data file', default="cfg/coco.data")
+	parser.add_argument('--weights_path', type=str,   help='path to the weights file', default="darknet/weights/yolo.weights")
+	parser.add_argument('--cfg_path', type=str,   help='path to a .cfg file', default="darknet/cfg/yolo.cfg")
+	parser.add_argument('--data_path', type=str,   help='path to .data file', default="darknet/cfg/coco.data")
 
 	args = parser.parse_args()
 

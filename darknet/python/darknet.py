@@ -60,10 +60,6 @@ make_probs.restype = POINTER(POINTER(c_float))
 detect = lib.network_predict_p
 detect.argtypes = [c_void_p, IMAGE, c_float, c_float, c_float, POINTER(BOX), POINTER(POINTER(c_float))]
 
-test_detector = lib.test_detector_p
-test_detector.argtypes = [c_void_p, c_char_p, c_char_p, c_float, c_float, 				  c_char_p, c_int]
-test_detector.restype = c_void_p
-
 reset_rnn = lib.reset_rnn
 reset_rnn.argtypes = [c_void_p]
 
