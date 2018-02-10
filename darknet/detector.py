@@ -13,9 +13,9 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='Detect ojbects and draw the predicted Bounding Boxes')
 
 	parser.add_argument('--imgs_path', type=str,   help='path to the images', required=True)
-	parser.add_argument('--weights_path', type=str,   help='path to the weights file', default="weights/yolo.weights", required=True)
-	parser.add_argument('--cfg_path', type=str,   help='path to a .cfg file', default="cfg/yolo.cfg", required=True)
-	parser.add_argument('--data_path', type=str,   help='path to .data file', default="cfg/coco.data", required=True)
+	parser.add_argument('--weights_path', type=str,   help='path to the weights file', default="weights/yolo.weights")
+	parser.add_argument('--cfg_path', type=str,   help='path to a .cfg file', default="cfg/yolo.cfg")
+	parser.add_argument('--data_path', type=str,   help='path to .data file', default="cfg/coco.data")
 
 	args = parser.parse_args()
 
@@ -41,9 +41,7 @@ if __name__ == "__main__":
 			os.makedirs(output_dir)
 
 	#perform the detection
-	for img in imgs: 
+	for img in imgs:
 		#r = dn.detect(net, meta, img)
 		output = output_dir + '/' + os.path.basename(img)[:-4]
 		dn.test_detector(net, metas, img, .24, .5, output, False)
-
-
