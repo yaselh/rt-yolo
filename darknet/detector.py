@@ -5,10 +5,8 @@ import math
 sys.path.append(os.path.join(os.getcwd(),'python/'))
 import darknet as dn
 import numpy as np
-import cv2
 import glob
 import argparse
-from multiprocessing.pool import ThreadPool
 
 class Detector:
 	def __init__(self, model="cfg/yolo.cfg",
