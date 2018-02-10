@@ -2,7 +2,7 @@
 
 import sys, os
 import math
-darknet_path = "./darknet/"
+darknet_path = "../darknet/"
 sys.path.append(os.path.join(darknet_path, "python"))
 import darknet as dn
 import numpy as np
@@ -23,7 +23,7 @@ class Detector:
 	def detect(self, img):
 		return dn.detect(self.net, self.meta, img)
 
-	def test(self, imgs_path):
+	def test_detection(self, imgs_path):
 		#get the images
 		imgs = glob.glob(args.imgs_path+'/*.jpg')
 
@@ -38,16 +38,14 @@ class Detector:
 			r = self.detect(img)
 			print r
 			output = output_dir + '/' + os.path.basename(img)[:-4]
-			#dn.test_detector(self.net, self.metas, img, .40, .5, output, False)
-
 if __name__ == "__main__":
 
 	parser = argparse.ArgumentParser(description='Detect ojbects and draw the predicted Bounding Boxes')
 
 	parser.add_argument('--imgs_path', type=str,   help='path to the images', required=True)
-	parser.add_argument('--weights_path', type=str,   help='path to the weights file', default="darknet/weights/yolo.weights")
-	parser.add_argument('--cfg_path', type=str,   help='path to a .cfg file', default="darknet/cfg/yolo.cfg")
-	parser.add_argument('--data_path', type=str,   help='path to .data file', default="darknet/cfg/coco.data")
+	parser.add_argument('--weights_path', type=str,   help='path to the weights file', default=darknet_path+"weights/yolo.weights")
+	parser.add_argument('--cfg_path', type=str,   help='path to a .cfg file', default=darknet_path+"cfg/yolo.cfg")
+	parser.add_argument('--data_path', type=str,   help='path to .data file', default=darknet_path+"cfg/coco.data")
 
 	args = parser.parse_args()
 
@@ -57,4 +55,4 @@ if __name__ == "__main__":
 	weights = args.weights_path #weights = "weights/yolo9000.weights"
 
 	detector = Detector(model, metas, weights)
-	detector.test(args.imgs_path)
+	detector.test_detection(args.imgs_path)
