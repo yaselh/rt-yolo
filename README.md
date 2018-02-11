@@ -8,12 +8,11 @@
 ## How to get started?
 
 ### Ubuntu/Linux
-First clone the repository and compile darknet
+First clone the repository and run the installation script
 ```
 git clone https://github.com/yaselh/rt-yolo.git
 cd rt-yolo
-cd darknet
-make # Will run on CPU. For GPU support, scroll down!
+source install.sh  # Will compile darknet for CPU. For GPU support, scroll down!
 ```
 The command below outputs the images with the predicted bounding boxes in a folder called "prediction" in the input images directory.
 Darknet/cfg and darknet/data contain already the config and meta data files of some known models.
