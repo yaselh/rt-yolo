@@ -10,11 +10,17 @@ import glob
 import argparse
 
 class Detector:
-	def __init__(self,model, metas, weights):
+	def __init__(self,model=darknet_path+"cfg/tiny-yolo.cfg",
+					  metas=darknet_path+"cfg/coco.data",
+					  weights=darknet_path+"weights/tiny-yolo.weights"):
 		#Define the model, model's meta data and weights
 		self.model = model
 		self.metas = metas
 		self.weights = weights
+
+		#self.model = darknet_path+"cfg/yolo9000.cfg"
+		#self.metas = darknet_path+"cfg/combine9k.data"
+		#self.weights = darknet_path+"weights/yolo9000.weights"
 
 		#load the net
 		self.net = dn.load_net(model, weights, 0)
@@ -50,9 +56,9 @@ if __name__ == "__main__":
 	args = parser.parse_args()
 
 	#Define the model, model's meta data and weights
-	model = args.cfg_path #model = "cfg/yolo9000.cfg"
-	metas = args.data_path #metas = "cfg/combine9k.data"
-	weights = args.weights_path #weights = "weights/yolo9000.weights"
+	model = args.cfg_path
+	metas = args.data_path
+	weights = args.weights_path
 
 	detector = Detector(model, metas, weights)
 	detector.test_detection(args.imgs_path)
