@@ -43,6 +43,7 @@ class WebcamDetector(Detector):
             image_data = self.webcamReader.device.read_and_queue()
             frame = np.frombuffer(image_data, dtype=np.uint8)
             frame = np.reshape(frame, (self.webcamReader.size_y,self.webcamReader.size_x,3))
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
             # Detect objects in frame
             start_time = time.time()
