@@ -15,7 +15,7 @@ class WebcamReader:
         # Create a buffer to store image data in. This must be done before
         # calling 'start' if v4l2capture is compiled with libv4l2. Otherwise
         # raises IOError.
-        self.device.create_buffers(30)
+        self.device.create_buffers(1)
 
         # Send the buffer to the device. Some devices require this to be done
         # before calling 'start'.
