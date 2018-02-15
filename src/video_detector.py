@@ -5,12 +5,12 @@ import cv2
 import select
 import time
 from detector import Detector
-from webcam_reader import WebcamReader
+from video_reader import VideoReader
 
-class WebcamDetector(Detector):
+class VideoDetector(Detector):
     def __init__(self):
         Detector.__init__(self)
-        self.webcamReader = WebcamReader()
+        self.VideoReader = VideoReader()
 
     @staticmethod
     def draw_bboxes(detected_objects, frame):
@@ -34,15 +34,15 @@ class WebcamDetector(Detector):
     def start(self):
         # Start the device. This lights the LED if it's a camera that has one.
         print "start capture"
-        self.webcamReader.device.start()
+        self.VideoReader.device.start()
         while(True):
             # Wait for the device to fill the buffer.
-            select.select((self.webcamReader.device,), (), ())
+            select.select((self.VideoReader.device,), (), ())
 
             # Read frame
-            image_data = self.webcamReader.device.read_and_queue()
+            image_data = self.VideoReader.device.read_and_queue()
             frame = np.frombuffer(image_data, dtype=np.uint8)
-            frame = np.reshape(frame, (self.webcamReader.size_y,self.webcamReader.size_x,3))
+            frame = np.reshape(frame, (self.VideoReader.size_y,self.VideoReader.size_x,3))
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
             # Detect objects in frame
@@ -55,7 +55,7 @@ class WebcamDetector(Detector):
             print detected_objects
             print "------------------------------------------------"
             # Draw bounding boxes in frame
-            WebcamDetector.draw_bboxes(detected_objects, frame)
+            VideoDetector.draw_bboxes(detected_objects, frame)
 
             # Show Frame
             cv2.imshow('frame', frame)
@@ -64,10 +64,10 @@ class WebcamDetector(Detector):
                 break
 
         # Close device
-        self.webcamReader.device.close()
+        self.VideoReader.device.close()
         cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':
-    detector = WebcamDetector()
+    detector = VideoDetector()
     detector.start()

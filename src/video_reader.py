@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from v4l2capture import Video_device
 
-class WebcamReader:
+class VideoReader:
     def __init__(self):
         # Open the video device.
         self.device = Video_device("/dev/video0")
