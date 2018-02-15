@@ -8,7 +8,7 @@ class WebcamReader:
 
         # Suggest an image size to the device. The device may choose and
         # return another size if it doesn't support the suggested one.
-        self.size_x, self.size_y = self.device.set_format(640, 480)
+        self.size_x, self.size_y = self.device.set_format(320, 240)
 
         print "device chose {0}x{1} res".format(self.size_x, self.size_y)
 
