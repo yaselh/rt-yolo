@@ -42,7 +42,8 @@ class VideoDetector(Detector):
             # Read frame
             image_data = self.VideoReader.device.read_and_queue()
             frame = np.frombuffer(image_data, dtype=np.uint8)
-            frame = np.reshape(frame, (self.VideoReader.size_y,self.VideoReader.size_x,3))
+            frame = np.reshape(frame, (self.VideoReader.size_y,
+                                       self.VideoReader.size_x,3))
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
             # Detect objects in frame

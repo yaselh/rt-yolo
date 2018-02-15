@@ -18,10 +18,6 @@ class Detector:
 		self.metas = metas
 		self.weights = weights
 
-		#self.model = darknet_path+"cfg/yolo9000.cfg"
-		#self.metas = darknet_path+"cfg/combine9k.data"
-		#self.weights = darknet_path+"weights/yolo9000.weights"
-
 		#load the net
 		self.net = dn.load_net(model, weights, 0)
 		self.meta = dn.load_meta(metas)
