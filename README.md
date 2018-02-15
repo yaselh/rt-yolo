@@ -1,7 +1,7 @@
 ## Real-Time Object Detection with Yolo (State of the art)
 
 <p align="center">
-  <img src="img/example.gif" width="500"><br/>
+  <img src="doc/imgs/example.gif" width="500"><br/>
   <i>Scroll down if you want to make your own video.</i>
 </p>
 
@@ -18,7 +18,7 @@ The command below outputs the images with the predicted bounding boxes in a fold
 Darknet/cfg and darknet/data contain already the config and meta data files of some known models.
 Make sure that you have already downloaded the weights file.
 ```
-./detector.py --imgs_path PATH_TO_IMAGES --weights_path weights/yolo.weights --cfg_path cfg/yolo.cfg --data_path cfg/coco.data
+./detector.py --imgs_path PATH_TO_IMAGES --weights_path weights/tiny-yolo.weights --cfg_path cfg/tiny-yolo.cfg --data_path cfg/coco.data
  ```
 
 The output should be something like:
@@ -50,7 +50,7 @@ layer     filters    size              input                output
    22 conv   1024  3 x 3 / 1    17 x  17 x 512   ->    17 x  17 x1024
    23 conv  28269  1 x 1 / 1    17 x  17 x1024   ->    17 x  17 x28269
    24 detection
-Loading weights from darknet/weights/yolo9000-weights/yolo9000.weights...Done!
+Loading weights from darknet/weights/tiny-yolo-weights/tiny-yolo.weights...Done!
 data/horses.jpg: Predicted in 7.556429 seconds.
 wild horse: 50%
 Shetland pony: 84%
@@ -62,17 +62,13 @@ The image with the bounding boxes is in `predictions.png`.
 
 ## Examples
 
-`./darknet detector test cfg/combine9k.data cfg/yolo9000.cfg ../yolo9000-weights/yolo9000.weights data/horses.jpg`
+`python detector.py cfg/coco.data cfg/tiny-yolo.cfg weights/tiny-yolo.weights data/horses.jpg`
 <div align="center">
-  <img src="img/predictions_horses.png" width="400"><br><br>
+  <img src="doc/imgs/predictions_horses.png" width="400"><br><br>
 </div>
 
-`./darknet detector test cfg/combine9k.data cfg/yolo9000.cfg ../yolo9000-weights/yolo9000.weights data/person.jpg`
-<div align="center">
-  <img src="img/predictions_person.png" width="400"><br><br>
-</div>
-
-Browse on https://pjreddie.com/darknet/yolo/ to find how to compile it for GPU as well. It's much faster!
+`python video_detector.py`
+<p align="center">performs detection from video data (from a webcam per default)</p>
 
 ## GPU Support
 
@@ -88,17 +84,6 @@ cd darknet
 make clean
 vim Makefile # Change the first two lines to: GPU=1 and CUDNN=1. You can also use emacs or nano!
 make
-./darknet detector test cfg/combine9k.data cfg/yolo9000.cfg ../yolo9000-weights/yolo9000.weights data/dog.jpg
-```
-
-The inference should be much faster:
-```
-Loading weights from ../yolo9000-weights/yolo9000.weights...Done!
-data/dog.jpg: Predicted in 0.035112 seconds.
-car: 70%
-canine: 56%
-bicycle: 57%
-Not compiled with OpenCV, saving to predictions.png instead
 ```
 
 You can also run the command and monitor its status with `nvidia-smi`:
@@ -133,30 +118,5 @@ Here, we can see that our process `darknet` is running on the first GPU.
 
 **NOTE**: We highly recommend a recent GPU with 8GB (or more) of memory to run flawlessly. GTX 1070, GTX 1080 Ti or Titan X are a great choice!
 
-## Make your own video! (Ubuntu/Linux)
-
-First we have to install some dependencies (OpenCV and ffmpeg):
 ```
-sudo apt-get install libopencv-dev python-opencv ffmpeg
-cd darknet
-make clean
-vim Makefile # Change the first three lines to: GPU=1, CUDNN=1 and OPENCV=1. You can also use emacs or nano!
-make
-./darknet detector demo cfg/combine9k.data cfg/yolo9000.cfg ../yolo9000-weights/yolo9000.weights  -prefix output <path_to_your_video_mp4> -thresh 0.15
-```
-By default the threshold is set to 0.25. It means that Yolo displays the bounding boxes of elements with a 25%+ confidence. In practice, a lower threshold means more detected items (but also more errors).
-
-Once this command returns, we merge the output images in a video:
-```
-ffmpeg -framerate 25 -i output_%08d.jpg output.mp4
-```
-
-We can now safely remove the temporary generated images:
-```
-rm output_*.jpg
-```
-
-The final video is `output.mp4`.
-
-<hr>
-The yolo-9000 weights and some "read me" parts belong to this repository : https://github.com/philipperemy/yolo-9000
+By default the threshold is set to 0.5. It means that Yolo displays the bounding boxes of elements with a 50%+ confidence. In practice, a lower threshold means more detected items (but also more errors).
