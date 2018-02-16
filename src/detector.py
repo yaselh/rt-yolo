@@ -27,8 +27,11 @@ class Detector:
 
 	def test_detection(self, imgs_path):
 		#get the images
-		imgs = glob.glob(args.imgs_path+'/*.jpg')
-
+		types = ('*.jpg', '*.jpeg', '*.png') # the tuple of file types
+		imgs = []
+		for files in types:
+			imgs.extend(glob.glob(args.imgs_path+files))
+		print imgs
 		#create the output directory
 		if imgs:
 			output_dir = os.path.join(os.path.dirname(imgs[0]),"predictions")
@@ -45,8 +48,8 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='Detect ojbects and draw the predicted Bounding Boxes')
 
 	parser.add_argument('--imgs_path', type=str,   help='path to the images', required=True)
-	parser.add_argument('--weights_path', type=str,   help='path to the weights file', default=darknet_path+"weights/yolo.weights")
-	parser.add_argument('--cfg_path', type=str,   help='path to a .cfg file', default=darknet_path+"cfg/yolo.cfg")
+	parser.add_argument('--weights_path', type=str,   help='path to the weights file', default=darknet_path+"weights/tiny-yolo.weights")
+	parser.add_argument('--cfg_path', type=str,   help='path to a .cfg file', default=darknet_path+"cfg/tiny-yolo.cfg")
 	parser.add_argument('--data_path', type=str,   help='path to .data file', default=darknet_path+"cfg/coco.data")
 
 	args = parser.parse_args()
