@@ -44,7 +44,6 @@ class Detector:
 		imgs = []
 		for files in types:
 			imgs.extend(glob.glob(args.imgs_path+files))
-		print imgs
 		#create the output directory
 		if imgs:
 			output_dir = os.path.join(os.path.dirname(imgs[0]),"predictions")
