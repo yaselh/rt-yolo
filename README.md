@@ -18,7 +18,7 @@ The command below outputs the images with the predicted bounding boxes in a fold
 Darknet/cfg and darknet/data contain already the config and meta data files of some known models.
 Make sure that you have already downloaded the weights file.
 ```
-./detector.py --imgs_path PATH_TO_IMAGES --weights_path weights/tiny-yolo.weights --cfg_path cfg/tiny-yolo.cfg --data_path cfg/coco.data
+python detector.py --imgs_path PATH_TO_IMAGES --weights_path weights/tiny-yolo.weights --cfg_path cfg/tiny-yolo.cfg --data_path cfg/coco.data
  ```
 
 The output should be something like:
@@ -58,7 +58,7 @@ Aberdeen Angus: 72%
 Not compiled with OpenCV, saving to predictions.png instead
 ```
 
-The image with the bounding boxes is in `predictions.png`. 
+The images with the bounding boxes are in `PATH_TO_IMAGES/predictions`. 
 
 ## Examples
 
@@ -67,8 +67,7 @@ The image with the bounding boxes is in `predictions.png`.
   <img src="doc/imgs/predictions_horses.png" width="400"><br><br>
 </div>
 
-`python video_detector.py`
-<p align="center">performs detection from video data (from a webcam per default)</p>
+`python video_detector.py #performs detection from video data (from a webcam per default)`
 
 ## GPU Support
 
