@@ -12,18 +12,6 @@ class VideoDetector(Detector):
         Detector.__init__(self)
         self.VideoReader = VideoReader()
 
-    @staticmethod
-    def draw_bboxes(detected_objects, frame):
-        bboxes = []
-        for r in detected_objects:
-            cx,cy,w,h = r[2]
-            x, y = int(cx - w/2), int(cy - h/2)
-            h, w = int(h), int(w)
-
-            font = cv2.FONT_HERSHEY_SIMPLEX
-            cv2.putText(frame, r[0], (x+15,y+15), font, 0.5, (0,255,0), 1, cv2.LINE_AA)
-            cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),3)
-
     def detect(self, frame):
         frame_path = "frame.png"
         cv2.imwrite(frame_path, frame)
@@ -56,7 +44,7 @@ class VideoDetector(Detector):
             print detected_objects
             print "------------------------------------------------"
             # Draw bounding boxes in frame
-            VideoDetector.draw_bboxes(detected_objects, frame)
+            Detector.draw_bboxes(detected_objects, frame)
 
             # Show Frame
             cv2.imshow('frame', frame)
