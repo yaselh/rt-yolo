@@ -1,22 +1,24 @@
 #!/usr/bin/env python
-from v4l2capture import Video_device
+import cv2
+from time import time
 
-class VideoReader:
+class VideoReader(cv2.VideoCapture):
     def __init__(self):
         # Open the video device.
-        self.device = Video_device("/dev/video0")
+        cv2.VideoCapture.__init__(self, 0)
 
-        # Suggest an image size to the device. The device may choose and
-        # return another size if it doesn't support the suggested one.
-        self.size_x, self.size_y = self.device.set_format(320, 240)
+    def getGrabDuration(self):
+        self.grab()
+        before_grab = time()
+        for i in range(5):
+            self.grab()
+        after_grab = time()
+        return 1000*(after_grab - before_grab)/5
 
-        print "device chose {0}x{1} res".format(self.size_x, self.size_y)
-
-        # Create a buffer to store image data in. This must be done before
-        # calling 'start' if v4l2capture is compiled with libv4l2. Otherwise
-        # raises IOError.
-        self.device.create_buffers(1)
-
-        # Send the buffer to the device. Some devices require this to be done
-        # before calling 'start'.
-        self.device.queue_all_buffers()
+    def skipFrames(self, num_frames):
+        before_skip = time()
+        for i in range(num_frames):
+            self.grab()
+        after_skip = time()
+        duration = after_skip - before_skip
+        print("skipping {0} frames in {1:.2f} seconds".format(num_frames,duration))

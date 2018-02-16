@@ -62,9 +62,9 @@ detect.argtypes = [c_void_p, IMAGE, c_float, c_float, c_float, POINTER(BOX), POI
 reset_rnn = lib.reset_rnn
 reset_rnn.argtypes = [c_void_p]
 
-load_net = lib.load_network_p
-load_net.argtypes = [c_char_p, c_char_p, c_int]
-load_net.restype = c_void_p
+_load_net = lib.load_network_p
+_load_net.argtypes = [c_char_p, c_char_p, c_int]
+_load_net.restype = c_void_p
 
 free_image = lib.free_image
 free_image.argtypes = [IMAGE]
@@ -73,7 +73,7 @@ letterbox_image = lib.letterbox_image
 letterbox_image.argtypes = [IMAGE, c_int, c_int]
 letterbox_image.restype = IMAGE
 
-load_meta = lib.get_metadata
+_load_meta = lib.get_metadata
 lib.get_metadata.argtypes = [c_char_p]
 lib.get_metadata.restype = METADATA
 
@@ -88,7 +88,21 @@ predict_image.restype = POINTER(c_float)
 network_detect = lib.network_detect
 network_detect.argtypes = [c_void_p, IMAGE, c_float, c_float, c_float, POINTER(BOX), POINTER(POINTER(c_float))]
 
+def load_net(model, weights):
+    model = bytes(str(model), 'ascii')
+    weights = bytes(str(weights), 'ascii')
+    return _load_net(model, weights, 0)
+
+def load_meta(metas):
+    metas = bytes(str(metas), 'ascii')
+    return _load_meta(metas)
+
+
 def classify(net, meta, im):
+    net = bytes(str(net), 'ascii')
+    meta = bytes(str(meta), 'ascii')
+    im = bytes(str(im), 'ascii')
+
     out = predict_image(net, im)
     res = []
     for i in range(meta.classes):
@@ -97,6 +111,7 @@ def classify(net, meta, im):
     return res
 
 def detect(net, meta, image, thresh=.5, hier_thresh=.5, nms=.45):
+    image = bytes(str(image), 'ascii')
     im = load_image(image, 0, 0)
     boxes = make_boxes(net)
     probs = make_probs(net)
@@ -106,12 +121,12 @@ def detect(net, meta, image, thresh=.5, hier_thresh=.5, nms=.45):
     for j in range(num):
         for i in range(meta.classes):
             if probs[j][i] > 0:
-                res.append((meta.names[i], probs[j][i], (boxes[j].x, boxes[j].y, boxes[j].w, boxes[j].h)))
+                res.append((meta.names[i].decode("utf-8"), probs[j][i], (boxes[j].x, boxes[j].y, boxes[j].w, boxes[j].h)))
     res = sorted(res, key=lambda x: -x[1])
     free_image(im)
     free_ptrs(cast(probs, POINTER(c_void_p)), num)
+
     return res
-    
+
 if __name__ == "__main__":
     pass
-
