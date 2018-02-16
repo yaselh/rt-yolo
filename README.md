@@ -62,7 +62,7 @@ The image with the bounding boxes is in `predictions.png`.
 
 ## Examples
 
-`python detector.py cfg/coco.data cfg/tiny-yolo.cfg weights/tiny-yolo.weights data/horses.jpg`
+`python detector.py --imgs_path data/horses.jpg`
 <div align="center">
   <img src="doc/imgs/predictions_horses.png" width="400"><br><br>
 </div>
