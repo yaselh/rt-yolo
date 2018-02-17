@@ -19,7 +19,7 @@ class VideoDetector(Detector):
         frame_path = "frame.png"
         cv2.imwrite(frame_path, frame)
         self.detectedObjects = Detector.detect(self, frame_path)
-        #os.remove(frame_path)
+        os.remove(frame_path)
         return self.detectedObjects
 
     def start(self):
