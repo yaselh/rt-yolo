@@ -1,60 +1,52 @@
 #!/usr/bin/env python
+
 import os
 import numpy as np
 import cv2
 import select
-import time
+import threading
+from time import time
 from detector import Detector
 from video_reader import VideoReader
 
 class VideoDetector(Detector):
     def __init__(self):
         Detector.__init__(self)
-        self.VideoReader = VideoReader()
+        self.videoReader = VideoReader()
+        self.detectedObjects = []
 
     def detect(self, frame):
         frame_path = "frame.png"
         cv2.imwrite(frame_path, frame)
-        result = Detector.detect(self, frame_path)
-        os.remove(frame_path)
-        return result
+        self.detectedObjects = Detector.detect(self, frame_path)
+        #os.remove(frame_path)
+        return self.detectedObjects
 
     def start(self):
-        # Start the device. This lights the LED if it's a camera that has one.
-        print "start capture"
-        self.VideoReader.device.start()
+        print("start capture ...")
         while(True):
-            # Wait for the device to fill the buffer.
-            select.select((self.VideoReader.device,), (), ())
-
             # Read frame
-            image_data = self.VideoReader.device.read_and_queue()
-            frame = np.frombuffer(image_data, dtype=np.uint8)
-            frame = np.reshape(frame, (self.VideoReader.size_y,
-                                       self.VideoReader.size_x,3))
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            ret, frame = self.videoReader.read()
 
             # Detect objects in frame
-            start_time = time.time()
-            detected_objects = self.detect(frame)
-            end_time = time.time()
-            delta_time = end_time - start_time
-            print "Detection performed in " + "{0:.2f}".format(delta_time) + " seconds"
-            print "Detected objects:"
-            print detected_objects
-            print "------------------------------------------------"
-            # Draw bounding boxes in frame
-            Detector.draw_bboxes(detected_objects, frame)
+            detect = threading.Thread(target=VideoDetector.detect,args=(self,frame))
+            detect.start()
 
-            # Show Frame
-            cv2.imshow('frame', frame)
-            key = cv2.waitKey(1)
-            if key & 0xFF == ord('q'):
-                break
+            # read and show frames without detecting while detection is being performed
+            while detect.isAlive():
+                ret, frame = self.videoReader.read()
 
-        # Close device
-        self.VideoReader.device.close()
-        cv2.destroyAllWindows()
+                # Draw bounding boxes in frame
+                Detector.draw_bboxes(self.detectedObjects, frame)
+
+                # Show frame
+                cv2.imshow('Detection',frame)
+
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    # Close device
+                    self.videoReader.release()
+                    cv2.destroyAllWindows()
+                    return
 
 
 if __name__ == '__main__':
