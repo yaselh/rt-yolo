@@ -4,8 +4,13 @@ from time import time
 
 class VideoReader(cv2.VideoCapture):
     def __init__(self):
-        # Open the video device.
+        self.height = 480
+        self.width = 640
+
+        # Init the video device.
         cv2.VideoCapture.__init__(self, 0)
+        self.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
+        self.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
 
     def getGrabDuration(self):
         self.grab()
